@@ -225,6 +225,7 @@ export function EditStudy() {
                 shortDescription: '',
                 longDescription: '',
                 durationMinutes: '' as any,
+                tags:[],
             })
             setTimeout(() => { document.querySelector<HTMLInputElement>('#participants-title')?.focus() }, 100)
             return
@@ -264,8 +265,9 @@ export function EditStudy() {
         Yup.object().shape({
             stages: Yup.array().min(1).required(),
         })
+
     )
-    console.log(study)
+
     const tag_options = uniqBy(TAG_OPTIONS.concat(
         study?.tags?.map(sto => ({ label: sto, value: sto }))
     ), 'value')
