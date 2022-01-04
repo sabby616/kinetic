@@ -33,7 +33,11 @@
 
       var ACCOUNTS_URL = 'https://staging.openstax.org/accounts';
       var WHOAMI_URL = 'https://staging.openstax.org/accounts/api/user';
-      var KINETIC_URL = 'https://staging.kinetic.openstax.org/';
+      //      var KINETIC_URL = 'https://staging.kinetic.openstax.org/';
+
+      var KINETIC_URL = 'http://localhost:4006/';
+      // will be set by fetching /api/v1/eligibility
+      var NON_ELIGIBLE = null;
     </script>
     <style>
       .general.page {
@@ -452,6 +456,12 @@
                 </a>
               </div>
             </div>
+
+            <div class="actions-block not-available" style="display: none;">
+              <p>
+                Sorry, Kinetic is not yet available in your geographical region.  Please check back later.
+              </p>
+            </div>
           </div>
 
         </div>
@@ -658,31 +668,51 @@
 
     <script type="application/javascript">
 
-      function revealElements(klass) {
+      function toggleElements(klass, show = true) {
         var links = document.querySelectorAll('.' + klass);
         for (var i = 0; i < links.length; i++) {
-          links[i].style.display = "block";
+          links[i].style.display = show ? 'block' : 'none';
         }
       }
 
+
+      function checkEligibility() {
+        window.fetch(KINETIC_URL + 'api/v1/eligibility', {
+          method: 'GET',
+        }).then(function(resp) {
+          resp.json().then(function(reply) {
+            if (!reply.eligible) {
+              NON_ELIGIBLE = true;
+              toggleElements('not-available')
+              toggleElements('login-signup', false)
+              toggleElements('start-using', false)
+            }
+          })
+        })
+      }
+
       function setUserState() {
+        if (NON_ELIGIBLE === true) { return }
         if (!window.fetch) {
-          revealElements('login-signup');
+          toggleElements('login-signup');
           return;
         }
         window.fetch(WHOAMI_URL, {
           method: 'GET',
           credentials: 'include'
         }).then(function(resp) {
+          if (NON_ELIGIBLE === true) { return }
+
           resp.json().then(function(user) {
             if (user.id) {
-              revealElements('start-using');
+              toggleElements('start-using');
             } else {
-              revealElements('login-signup');
+              toggleElements('login-signup');
             }
           });
         }).catch(function() {
-          revealElements('login-signup');
+          if (NON_ELIGIBLE === true) { return }
+          toggleElements('login-signup');
         });
       }
 
@@ -692,7 +722,7 @@
           links[i].href = href;
         }
       }
-
+      checkEligibility()
       rewriteLinks('login', ACCOUNTS_URL + '/i/login?r=' + KINETIC_URL);
       rewriteLinks('signup', ACCOUNTS_URL + '/i/signup?r=' + KINETIC_URL);
       rewriteLinks('start', KINETIC_URL);
