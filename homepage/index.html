@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kinetic homepage</title>
     <style>
@@ -326,12 +326,19 @@
         padding: 30px;
         flex: 1 0 calc(33% - 20px);
         flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
       }
       .kinetic-homepage .examples .card .lead {
         font-size: 26px;
         color: #6922EA;
+        margin: 0;
+        line-height: 38px;
       }
+      .kinetic-homepage .examples .card .body {
+        flex: 1;
 
+      }
 
       .kinetic-homepage .footer {
         background: black;
@@ -585,42 +592,47 @@
             <p class="lead">
               Biology Educational Video
             </p>
-            <p>
+            <p class="body">
               You will be shown an educational video relevant to Chapter 14 (“DNA Structure and Function”) that might help you in your current biology class. How you watch the videos and perform on a brief assessment will be used for future research on video training.
             </p>
+            <div>🕑 8 min · 40pts</div>
           </div>
           <div class="card">
             <p class="lead">
               Physics Math Anxiety Lesson
             </p>
-            <p>
+            <p class="body">
               Have you ever thought of writing and physics going together? Try our writing exercise after a brief physics math lesson on scientific units. How you perform on a short assessment will be used for further research on how to reduce students’ anxiety about math.
             </p>
+            <div>🕑 5 min · 10pts</div>
           </div>
           <div class="card">
             <p class="lead">
               Science Basics
             </p>
-            <p>
+            <p class="body">
               How much do you remember from your middle school and high school science classes? Take this brief quiz and find out which topics you’ve retained the most from… and where you might have forgotten a thing or two.
             </p>
+            <div>🕑 10 min · 45pts</div>
           </div>
 
           <div class="card">
             <p class="lead">
               Future Career Quiz
             </p>
-            <p>
+            <p class="body">
               Which careers would you be most fulfilled in? You will take a vocational interest survey that will provide you ideas of which jobs might be a good fit for you based on your interests.
             </p>
+            <div>🕑 10 min · 10pts</div>
           </div>
           <div class="card">
             <p class="lead">
               How Much Control Do You Feel Over Your Life?
             </p>
-            <p>
+            <p class="body">
               Feeling a sense of control over your actions and your future is a mindset you choose. Find out where you stand right now, plus how you can improve.
             </p>
+            <div>🕑 10 min · 45pts</div>
           </div>
         </div>
       </div>
