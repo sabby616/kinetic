@@ -34,9 +34,19 @@ class User
     else
       completed_stage_ids = launched_stages(study: study).map(&:stage_id)
       stage = study.stages.where.not(id: completed_stage_ids).order(:order).first
-      raise 'No stage to launch exists' if stage.nil?
+      if stage.nil?
+      begin
+        # Don't expect more than one, just unwrapping the returned set
+        launched_study = LaunchedStudy.where({user_id: id, study_id: study.id}).first 
+        if launched_study.retakeable?
+          stage = study.stages.order(:order).first
+        end
+      end
+      else
+        raise 'No stage to launch exists' if stage.nil?
+      end
 
-      launch = LaunchedStage.create(stage_id: stage.id, user_id: id)
+      launch = LaunchedStage.find_or_create_by!(stage_id: stage.id, user_id: id)
     end
     launch
   end
